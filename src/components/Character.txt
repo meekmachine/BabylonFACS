@@ -1,0 +1,68 @@
+// my-dance-game/client/src/components/Character.tsx
+
+import React, { useEffect, useRef } from 'react';
+import { Vector3, SceneLoader, Scene, AnimationGroup, AbstractMesh } from '@babylonjs/core';
+import { useScene } from 'react-babylonjs';
+import "@babylonjs/loaders/glTF";
+
+
+interface CharacterProps {
+  state: {
+    id: string;
+    position: Vector3;
+    animation: string;
+    scale?: number;  // Added this line
+  };
+  updateState: (id: string, newState: any) => void;
+}
+
+const Character: React.FC<CharacterProps> = ({ state, updateState }) => {
+  const { id, position, animation } = state;
+  const scene = useScene(); // Access the Babylon scene
+  const modelRef = useRef<AbstractMesh | null>(null);
+  const animationsRef = useRef<{ [name: string]: AnimationGroup }>({}); // Store the animations
+
+  // Load the model when the component mounts
+  useEffect(() => {
+    SceneLoader.ImportMeshAsync('', "https://assets.babylonjs.com/meshes/", "Xbot.glb", scene).then((result) => {
+      console.log("Meshes", result.meshes);
+      console.log("Animations", result.animationGroups);
+      
+      const scaleValue = state.scale || 1;
+      result.meshes.forEach(mesh => {
+        mesh.scaling = new Vector3(scaleValue, scaleValue, scaleValue);
+      }); // Adjust this scale value as per your requirement
+      // Store the animations
+      result.animationGroups.forEach((group) => {
+        animationsRef.current[group.name] = group;
+      });
+
+      // Play the initial animation
+      if (animationsRef.current[animation]) {
+        animationsRef.current[animation].start(true);
+      }
+    });
+  }, [scene, animation]);
+
+  // Update the model position when the position prop changes
+  useEffect(() => {
+    if (modelRef.current) {
+      modelRef.current.position = position;
+    }
+  }, [position]);
+
+  // Switch to a different animation when the animation prop changes
+  useEffect(() => {
+    // Stop all animations
+    Object.values(animationsRef.current).forEach((group) => group.stop());
+
+    // Play the new animation
+    if (animationsRef.current[animation]) {
+      animationsRef.current[animation].start(true);
+    }
+  }, [animation]);
+
+  return null; // No JSX is needed as Babylon handles the rendering
+};
+
+export default Character;
