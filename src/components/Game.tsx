@@ -37,7 +37,7 @@ const Game: React.FC = () => {
           lowerRadiusLimit={5} // Minimum zoom distance.
           upperRadiusLimit={15} // Maximum zoom distance.
         />
-        {/* <directionalLight
+        <directionalLight
 
           name="shadow-light"
           setDirectionToTarget={[Vector3.Zero()]}
@@ -55,7 +55,7 @@ const Game: React.FC = () => {
             forceBackFacesOnly={true}
             depthScale={100}
             shadowCastChildren
-          > */}
+          >
             {Array.from(new Array(NUMBER_OF_BOXES), (_, index) => index).map(
               (x) => (
                 <BouncySphere
@@ -90,8 +90,8 @@ const Game: React.FC = () => {
               animationSpeed={1.3}
               // remove the updateState prop if it's not being used
             />
-          {/* </shadowGenerator>
-        </directionalLight> */}
+          </shadowGenerator>
+        </directionalLight>
 
         <ground
           name="ground1"
@@ -106,22 +106,22 @@ const Game: React.FC = () => {
           />
         </ground>
 
-        <PartyLights  
+        {/* <PartyLights  
           numberOfLights={22} 
           scale={4}  
           pulseIntensity={5} 
           baseIntensity={44} pulseSpeed={0} speed={.9}
           offsetMargin={0}
-          />
+          /> */}
 
-        {/* {pointLightRef.current && (
+        {pointLightRef.current && (
           <shadowGenerator
             mapSize={512}
             darkness={0.5}
             shadowCasters={["box1", "ground1"]}
             light={pointLightRef.current}
           />
-        )} */}
+        )}
 
         {/* <ground name="ground1" width={6} height={6} receiveShadows={true} /> */}
 
