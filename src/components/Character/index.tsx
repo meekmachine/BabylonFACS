@@ -13,7 +13,7 @@ const Character: React.FC<CharacterState> = (props) => {
     const cachedAnimations = useAnimations(props.animations.map(anim => anim.name));
 
     useEffect(() => {
-        SceneLoader.ImportMesh('', "https://assets.babylonjs.com/meshes/", "Xbot.glb", scene, (newMeshes) => {
+        SceneLoader.ImportMesh('', "/models/character/", "eva.glb", scene, (newMeshes) => {
             characterMeshRef.current = newMeshes[0] as Mesh;
             characterMeshRef.current.position = props.position;
             characterMeshRef.current.scaling = new Vector3(props.scale, props.scale, props.scale);
